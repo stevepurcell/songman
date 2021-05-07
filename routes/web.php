@@ -13,15 +13,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+
+Route::view('/song-list-create', 'song-list-create')->name('song-list-create');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => 'auth'], function() {
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::get('/', function () {
+        return view('songs');
+    });
+    
+    Route::get('/songlists', function () {
+        return view('show-lists');
+    });
+    
+    Route::view('/song-list-create', 'song-list-create')->name('song-list-create');
+
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'is_admin'], function() {
     });
 });
